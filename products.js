@@ -18,8 +18,8 @@ const app = {
             axios
                 .post(`${baseUrl}/v2/api/user/check`)
                 .then(this.getProducts())
-                .catch((error) => {
-                    alert(error.response.data.message);
+                .catch(() => {
+                    alert("請登入");
                     window.location = "login.html"
                 })
         },
