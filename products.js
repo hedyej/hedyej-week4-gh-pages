@@ -6,7 +6,7 @@ const app = {
         return {
             products:{},
             temp:[],
-            baseUrl: "https://vue3-course-api.hexschool.io/",
+            baseUrl: "https://vue3-course-api.hexschool.io",
             apiPath: "duej123456"
         }
     },
@@ -17,7 +17,7 @@ const app = {
                 .post(`${this.baseUrl}/v2/api/user/check`)
                 .then(this.getProducts())
                 .catch((error) => {
-                    alert(error.response.data.message);
+                    alert(error.data.message);
                     window.location = "login.html"
                 })
         },

@@ -7,7 +7,7 @@ const app = {
                 username:"",
                 password:""
             },
-            baseUrl: "https://vue3-course-api.hexschool.io/"
+            baseUrl: "https://vue3-course-api.hexschool.io"
         }
     },
 
@@ -20,7 +20,7 @@ const app = {
                         document.cookie = `hedyToken = ${token}`;
                         window.location = 'products.html';
                     })
-                .catch(error => alert(error.response.data.message))
+                .catch(error => alert(error.data.message))
         },
     }
 };
