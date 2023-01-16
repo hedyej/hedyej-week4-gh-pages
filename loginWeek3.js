@@ -17,7 +17,7 @@ const app = {
                 .then(
                     res => {
                         const {token} = res.data;
-                        document.cookie = `hedyToken = ${token};expires=${new Date(expired)}`;
+                        document.cookie = `hedyToken = ${token};`;
                         window.location = 'products.html';
                     })
                 .catch(error => alert(error.data.message))
