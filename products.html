@@ -15,7 +15,7 @@
 <div id="app">
 <div class="container">
 <div class="text-end mt-4">
-    <button class="btn btn-primary" @click="createProduct">
+    <button class="btn btn-primary" @click="openModal('new')">
     建立新的產品
     </button>
 </div>
@@ -47,15 +47,15 @@
         <td class="text-end">{{ item.origin_price }}</td>
         <td class="text-end">>{{ item.price }}</td>
         <td>
-        <span class="text-success" v-if="is_enabled">啟用</span>
+        <span class="text-success" v-if="item.is_enabled">啟用</span>
         <span v-else>未啟用</span>
         </td>
         <td>
         <div class="btn-group">
-            <button type="button" class="btn btn-outline-primary btn-sm">
+            <button @click="openModal('edit',item)" type="button" class="btn btn-outline-primary btn-sm">
             編輯
             </button>
-            <button type="button" class="btn btn-outline-danger btn-sm">
+            <button @click="openModal('delete',item)" type="button" class="btn btn-outline-danger btn-sm">
             刪除
             </button>
         </div>
@@ -71,7 +71,8 @@
     <div class="modal-content border-0">
     <div class="modal-header bg-dark text-white">
         <h5 id="productModalLabel" class="modal-title">
-        <span>新增產品</span>
+        <span v-if="isNew">新增產品</span>
+        <span v-else>編輯產品</span>
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
@@ -81,21 +82,30 @@
             <div class="mb-2">
             <div class="mb-3">
                 <label for="imageUrl" class="form-label">輸入圖片網址</label>
-                <input type="text" class="form-control"
+                <input v-model="tempProduct.imageUrl" type="text" class="form-control"
                         placeholder="請輸入圖片連結">
             </div>
-            <img class="img-fluid" src="" alt="">
+            <img class="img-fluid" :src="tempProduct.imageUrl">
             </div>
             <div>
-            <button class="btn btn-outline-primary btn-sm d-block w-100">
+            <div v-if="tempProduct.imagesUrl.length > 0" class="mb-2">
+                <div  v-for="(item,index) in tempProduct.imagesUrl" :key="index" class="mb-3">
+                    <label for="imageUrl" class="form-label">輸入圖片網址</label>
+                    <input v-model="tempProduct.imagesUrl[index]" type="text" class="form-control"
+                            placeholder="請輸入圖片連結">
+                    <img class="img-fluid" :src="item">
+                </div>
+            </div>
+            <button v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]" @click="addImg" class="btn btn-outline-primary btn-sm d-block w-100" >
                 新增圖片
             </button>
-            </div>
             <div v-else>
-            <button class="btn btn-outline-danger btn-sm d-block w-100">
-                刪除圖片
-            </button>
+                <button  @click="deleteImg" class="btn btn-outline-danger btn-sm d-block w-100">
+                    刪除圖片
+                </button>
             </div>
+            </div>
+
         </div>
         <div class="col-sm-8">
             <div class="mb-3">
@@ -154,7 +164,7 @@
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
         取消
         </button>
-        <button @click="postProduct" type="button" class="btn btn-primary" >
+        <button @click="updateProduct" type="button" class="btn btn-primary" >
         確認
         </button>
     </div>
@@ -179,7 +189,7 @@
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
         取消
         </button>
-        <button type="button" class="btn btn-danger">
+        <button @click="deleteProduct" type="button" class="btn btn-danger">
         確認刪除
         </button>
     </div>
