@@ -15,7 +15,7 @@ const app = {
                 imagesUrl:[],
             },
             isNew:"",
-            pages:""
+            pages:{}
         }
     },
 
@@ -33,7 +33,7 @@ const app = {
 
         getProduct(page = 1){
             axios
-                .get(`${this.baseUrl}/v2/api/${this.apiPath}/products?page=${page}`)
+                .get(`${this.baseUrl}/v2/api/${this.apiPath}/admin/products?page=${page}`)
                 .then(res => {
                     this.pages = res.data.pagination;
                     this.products = res.data.products;
@@ -49,6 +49,7 @@ const app = {
                 this.isNew = false;
                 this.tempProduct = {...item}
                 productModal.show();
+                if(!this.tempProduct.imagesUrl){this.tempProduct.imagesUrl = []}
             }else if(type === "delete"){
                 this.tempProduct = {...item}
                 deleteModal.show();
