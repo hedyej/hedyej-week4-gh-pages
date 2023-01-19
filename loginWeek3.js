@@ -16,8 +16,8 @@ const app = {
             axios.post(`${this.baseUrl}/v2/admin/signin`,this.user)
                 .then(
                     res => {
-                        const {token} = res.data;
-                        document.cookie = `hedyToken = ${token};`;
+                        const {token,expired} = res.data;
+                        document.cookie = `hedyToken = ${token}; expires = ${new Date(expired)};`;
                         window.location = 'products.html';
                     })
                 .catch(error => alert(error.data.message))
